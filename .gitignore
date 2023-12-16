@@ -131,3 +131,4 @@ dist
 
 # vk messages
 messages[0-9]*.html
+messages[0-9]*.json

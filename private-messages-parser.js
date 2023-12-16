@@ -3,14 +3,30 @@ const { JSDOM } = jsdom;
 const { DateTime } = require("luxon");
 const fs = require('fs');
 var Iconv = require('iconv').Iconv;
-const $ = require("jquery")(dom.window);
+const path = require('path');
+const { program } = require('commander');
+
+program
+  .requiredOption('-s, --source <path>', 'source HTML file')
+  .option('-t, --target <path>', 'target JSON file');
+
+program.parse(process.argv);
+
+const options = program.opts();
+if (!options.source) {
+  console.log('--source is required');
+  process.exit(1);
+}
+
+let sourcePath = options.source;
+let targetPath = options.target || `${path.basename(sourcePath, '.html')}.json`;
 
 var iconv = new Iconv('cp1251', 'utf-8');
-const encoded = fs.readFileSync(`./messages0.html`);
+const encoded = fs.readFileSync(sourcePath);
 const decoded = iconv.convert(encoded).toString();
 
 const dom = new JSDOM(decoded);
-
+const $ = require("jquery")(dom.window);
 let result = [];
 $(".item").each(function() {
   let $msg = $(".message__header", this);
@@ -40,5 +56,6 @@ $(".item").each(function() {
   result.push(message);
 });
 
-console.log(JSON.stringify(result, null, 2));
-console.log(JSON.stringify(result.map(x=>x.text), null, 2));
+fs.writeFileSync(targetPath, JSON.stringify(result, null, 2));
+
+console.log(`Messages saved to ${targetPath}`);

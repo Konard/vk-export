@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Konard/vk-export#readme",
   "dependencies": {
+    "commander": "^11.1.0",
     "iconv": "^3.0.1",
     "jquery": "^3.7.1",
     "jsdom": "^23.0.1",
