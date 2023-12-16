@@ -1,18 +1,16 @@
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const { DateTime } = require("luxon");
-
 const fs = require('fs');
 var Iconv = require('iconv').Iconv;
+const $ = require("jquery")(dom.window);
+
+
 var iconv = new Iconv('cp1251', 'utf-8');
 const encoded = fs.readFileSync(`./messages0.html`);
 const decoded = iconv.convert(encoded).toString();
 
-// assuming htmlContent has been loaded from a file or is the HTML string
 const dom = new JSDOM(decoded);
-
-// get jQuery-like object
-const $ = require("jquery")(dom.window);
 
 let result = [];
 $(".item").each(function() {
@@ -20,9 +18,7 @@ $(".item").each(function() {
   let $text = $($("div", this)[3]);
   let hasAttachment = $text.has('.attachment').length;
 
-  // match message__header format and extract name, id, date and (optionally) edited date
-  let match = $msg.text().match(/^([^,]+), (at \d+:\d+:\d+ [pa]m on \d+ \w+ \d+)\s*(\(edited\))?/); // ((on (.*?))?(\((edited)?(.*?)\))?)
-  // console.log(match);
+  let match = $msg.text().match(/^([^,]+), (at \d+:\d+:\d+ [pa]m on \d+ \w+ \d+)\s*(\(edited\))?/);
   let date = DateTime.fromFormat(match[2], "'at' h:mm:ss a 'on' d MMM yyyy");
 
   console.log(date);
