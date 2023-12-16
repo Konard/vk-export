@@ -44,9 +44,10 @@ $(".item").each(function() {
     author: match[1],
     date,
     isEdited: !!match[3],
-    text: $text.contents().filter(function() {
-      return this.nodeType === 3; // Node.TEXT_NODE
-    }).text().trim(),
+    // text: $text.contents().filter(function() {
+    //   return this.nodeType === 3; // Node.TEXT_NODE
+    // }).text().trim(),
+    // text: $text.html().replace(/<br\s*[\/]?>/gi, "\n").trim(),
     hasAttachment: hasAttachment ? true : false
   }
   if (message.hasAttachment) {
@@ -56,7 +57,12 @@ $(".item").each(function() {
     }
   }
 
+  $('.kludges', this).remove();
+
+  message.text = $text.html().replace(/<br\s*[\/]?>/gi, "\n").trim();
+
   result.push(message);
 });
 
 console.log(JSON.stringify(result, null, 2));
+console.log(JSON.stringify(result.map(x=>x.text), null, 2));
