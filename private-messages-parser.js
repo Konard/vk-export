@@ -19,7 +19,10 @@ if (!options.source) {
 }
 
 let sourcePath = options.source;
-let targetPath = options.target || `${path.basename(sourcePath, '.html')}.json`;
+let targetPath = options.target || path.join(path.dirname(sourcePath), `${path.basename(sourcePath, '.html')}.json`);
+
+// console.log(sourcePath);
+// console.log(targetPath);
 
 var iconv = new Iconv('cp1251', 'utf-8');
 const encoded = fs.readFileSync(sourcePath);
@@ -58,4 +61,4 @@ $(".item").each(function() {
 
 fs.writeFileSync(targetPath, JSON.stringify(result, null, 2));
 
-console.log(`Messages saved to ${targetPath}`);
+console.log(`${result.length} messages saved to ${targetPath}`);
