@@ -11,6 +11,7 @@ use serde_json::json;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::PathBuf;
+use std::time::Instant;
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
@@ -22,6 +23,8 @@ struct Cli {
 }
 
 fn main() -> std::io::Result<()> {
+    let start = Instant::now();
+
     let args = Cli::from_args();
     
     let source_path = args.source;
@@ -72,6 +75,9 @@ fn main() -> std::io::Result<()> {
     let encoded = serde_json::to_string_pretty(&entries)?;
     let mut file = File::create(target_path)?;
     file.write_all(encoded.as_bytes())?;
+
+    let duration = start.elapsed();
+    println!("Execution Time: {:?}", duration);
 
     Ok(())
 }
