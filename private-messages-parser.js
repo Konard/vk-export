@@ -36,8 +36,7 @@ let result = [];
 $(".item").each(function() {
   let $msg = $(".message__header", this);
   let $text = $($("div", this)[3]);
-  let hasAttachment = $text.has('.attachment').length;
-
+  
   let match = $msg.text().match(/^([^,]+), (at \d+:\d+:\d+ [pa]m on \d+ \w+ \d+)\s*(\(edited\))?/);
   let date = DateTime.fromFormat(match[2], "'at' h:mm:ss a 'on' d MMM yyyy");
 
@@ -45,10 +44,11 @@ $(".item").each(function() {
     id: $(this).find('.message').attr('data-id'),
     author: match[1],
     date,
-    isEdited: !!match[3],
-    hasAttachment: hasAttachment ? true : false
+    isEdited: !!match[3]
   }
-  if (message.hasAttachment) {
+  
+  let hasAttachment = $text.has('.attachment').length; // todo process multiple attachments
+  if (hasAttachment) {
     message.attachment = {
       description: $('.attachment__description', this).text().trim(),
       link: $('.attachment__link', this).attr('href')
