@@ -1,3 +1,5 @@
+console.time('Execution Time');
+
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const { DateTime } = require("luxon");
@@ -62,3 +64,4 @@ $(".item").each(function() {
 fs.writeFileSync(targetPath, JSON.stringify(result, null, 2));
 
 console.log(`${result.length} messages saved to ${targetPath}`);
+console.timeEnd('Execution Time');
