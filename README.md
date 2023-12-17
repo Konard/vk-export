@@ -41,8 +41,14 @@ cd vk-export
 
 2. Run the tool:
 
+JS version:
 ```bash
 node private-messages-parser.js -s path_to_source.html [-t path_to_target.json]
+```
+Rust version:
+```bash
+cd rust
+cargo run -- -s path_to_source.html [-t path_to_target.json]
 ```
 
 Replace `path_to_source.html` and (optionally) `path_to_target.json` with the paths of your source HTML file and the target .json file. If you don't specify a target JSON file, the program will create one with the same name as your source file.
